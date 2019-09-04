@@ -11,20 +11,22 @@ namespace DatingApp.Api.Data
 
         public DbSet<User> Users {get; set;}
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Value>().HasData(
-                new
-                {
-                    Id = 1,
-                    Name = "Value1"
-                },
-                new
-                {
-                    Id = 2,
-                    Name = "Value2"
-                }
-            );
-        }
+        public DbSet<Photo> Photos {get; set;}
+
+        // protected override void OnModelCreating(ModelBuilder modelBuilder)
+        // {
+        //     modelBuilder.Entity<Value>().HasData(
+        //         new
+        //         {
+        //             Id = 1,
+        //             Name = "Value1"
+        //         },
+        //         new
+        //         {
+        //             Id = 2,
+        //             Name = "Value2"
+        //         }
+        //     );
+        // }
     }
 }
