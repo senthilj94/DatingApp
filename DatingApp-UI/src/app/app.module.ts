@@ -1,9 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
+// import { JwtModule } from '@auth0/angular-jwt';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,8 +17,15 @@ import { ErrorInterceptorProvider } from './services/error.interceptor';
 import { AlertifyService } from './services/alertify.service';
 import { MessagesComponent } from './messages/messages.component';
 import { ListsComponent } from './lists/lists.component';
-import { MemberListsComponent } from './member-lists/member-lists.component';
+import { MemberListsComponent } from './members/member-lists/member-lists.component';
 import { routes } from './routes';
+import { MemberCardsComponent } from './members/member-cards/member-cards.component';
+import { UserService } from './services/user.service';
+import { TokeninterceptorService } from './services/tokeninterceptor.service';
+
+// export function tokenGetter() {
+//    return localStorage.getItem('token');
+// }
 
 @NgModule({
    declarations: [
@@ -28,7 +36,8 @@ import { routes } from './routes';
       RegisterComponent,
       MessagesComponent,
       ListsComponent,
-      MemberListsComponent
+      MemberListsComponent,
+      MemberCardsComponent
    ],
    imports: [
       BrowserModule,
@@ -36,12 +45,25 @@ import { routes } from './routes';
       HttpClientModule,
       FormsModule,
       BsDropdownModule.forRoot(),
-      RouterModule.forRoot(routes)
+      RouterModule.forRoot(routes),
+      // JwtModule.forRoot({
+      //    config: {
+      //       tokenGetter,
+      //       whitelistedDomains: ['localhost:5000'],
+      //       blacklistedRoutes: ['localhost:5000/api/auth']
+      //    }
+      // })
    ],
    providers: [
       AuthService,
       ErrorInterceptorProvider,
-      AlertifyService
+      AlertifyService,
+      UserService,
+      {
+         provide: HTTP_INTERCEPTORS,
+         useClass: TokeninterceptorService,
+         multi: true
+      }
    ],
    bootstrap: [
       AppComponent
